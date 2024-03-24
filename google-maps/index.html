@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Cost Calculator | Google Maps</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbar-fixed/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <style>
+        /* Show it is fixed to the top */
+        body {
+            min-height: 75rem;
+            padding-top: 4.5rem;
+        }
+
+    </style>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <style>
+        #map {
+            height: 600px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Cost Calculator</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/mulyosyahidin">My GitHub</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group mb-2">
+                        <input type="text" id="start-place" class="form-control" placeholder="Cari lokasi awal">
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <input type="text" id="destination-place" class="form-control" placeholder="Cari lokasi tujuan">
+                    </div>
+
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Cost Calculator</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="distance">Jarak</label>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" id="distance">
+                                    <span class="input-group-text" id="basic-addon2">km</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="cost">Biaya per KM</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon3">Rp</span>
+                                    <input type="number" class="form-control" id="cost" value="1000">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Biaya Tambahan</p>
+
+                    <div class="form-check  d-flex justify-content-between align-items-center">
+                        <label class="form-check-label">
+                            <input class="hujan form-check-input" type="checkbox" value="2000">Hujan</label>
+                        <span class="badge bg-primary">+2000</span>
+                    </div>
+
+                    <div class="form-check  d-flex justify-content-between align-items-center">
+                        <label class="form-check-label">
+                            <input class="malam-hari form-check-input" type="checkbox" value="3000">Malam Hari</label>
+                        <span class="badge bg-primary">+3000</span>
+                    </div>
+
+                    <div class="form-check  d-flex justify-content-between align-items-center">
+                        <label class="form-check-label">
+                            <input class="jam-sibuk form-check-input" type="checkbox" value="3000">Jam Sibuk</label>
+                        <span class="badge bg-primary">+3000</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        <label for="result">Hasil</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon4">Rp</span>
+                            <input type="number" class="form-control" id="result" value="">
+                        </div>
+
+                        <small class="text-muted">
+                            Pastikan Anda memeriksa hasil perhitungan biaya.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const API_KEY = 'AIzaSyAcpNdTyCirUtCvE3Y1avHM1oxdleFo2b4';
+    const MAP_ID = '2b67b5c55fe71f48';
+    const MAP_TYPE_ID = 'roadmap';
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcpNdTyCirUtCvE3Y1avHM1oxdleFo2b4&callback=initializeMap&libraries=places,geometry&v=weekly"
+        defer></script>
+
+<script>
+    let mapInstance;
+
+    let startMarker;
+    let destinationMarker;
+
+    let directionsService;
+    let directionsRenderer;
+
+    let distanceElement = document.getElementById('distance');
+    let costElement = document.getElementById('cost');
+    let resultElement = document.getElementById('result');
+
+    let hujanElement = document.querySelector('.hujan');
+    let malamHariElement = document.querySelector('.malam-hari');
+    let jamSibukElement = document.querySelector('.jam-sibuk');
+
+    let startPlace = document.getElementById('start-place');
+    let destinationPlace = document.getElementById('destination-place');
+
+    function calculateCost() {
+        let distance = parseFloat(distanceElement.value);
+        let cost = parseFloat(costElement.value);
+
+        let result = distance * cost;
+
+        if (hujanElement.checked) {
+            result += parseFloat(hujanElement.value);
+        }
+
+        if (malamHariElement.checked) {
+            result += parseFloat(malamHariElement.value);
+        }
+
+        if (jamSibukElement.checked) {
+            result += parseFloat(jamSibukElement.value);
+        }
+
+        resultElement.value = result.toFixed(2);
+    }
+
+    distanceElement.addEventListener('input', calculateCost);
+    costElement.addEventListener('input', calculateCost);
+
+    hujanElement.addEventListener('change', calculateCost);
+    malamHariElement.addEventListener('change', calculateCost);
+    jamSibukElement.addEventListener('change', calculateCost);
+
+    function initializeMap() {
+        mapInstance = new google.maps.Map(document.getElementById("map"), {
+            center: {
+                lat: -3.7675944,
+                lng: 102.2662378
+            },
+            zoom: 11,
+            mapTypeId: MAP_TYPE_ID,
+            mapId: MAP_ID,
+        });
+
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+
+        setupSearchBox(startPlace, 'start');
+        setupSearchBox(destinationPlace, 'destination');
+    }
+
+    function setupSearchBox(inputElement, type) {
+        const searchBox = new google.maps.places.SearchBox(inputElement);
+
+        searchBox.addListener('places_changed', () => {
+            const places = searchBox.getPlaces();
+
+            if (places.length === 0) {
+                return;
+            }
+
+            const place = places[0];
+
+            if (!place.geometry) {
+                console.log("Tempat tidak ditemukan");
+                return;
+            }
+
+            updateMarkerAndRoute(place.geometry.location, type);
+
+            if (type === 'start') {
+                mapInstance.setCenter(place.geometry.location);
+                mapInstance.setZoom(14); // Update zoom level as needed
+            }
+        });
+
+        mapInstance.addListener("bounds_changed", () => {
+            searchBox.setBounds(mapInstance.getBounds());
+        });
+    }
+
+    function updateMarkerAndRoute(location, type) {
+        if (type === 'start') {
+            if (startMarker) {
+                startMarker.setMap(null);
+            }
+            startMarker = new google.maps.Marker({
+                position: location,
+                map: mapInstance,
+                draggable: true
+            });
+
+            startMarker.addListener('dragend', () => {
+                updateMarkerAndRoute(startMarker.getPosition(), 'start');
+            });
+        } else if (type === 'destination') {
+            if (destinationMarker) {
+                destinationMarker.setMap(null);
+            }
+            destinationMarker = new google.maps.Marker({
+                position: location,
+                map: mapInstance,
+                draggable: true
+            });
+
+            destinationMarker.addListener('dragend', () => {
+                updateMarkerAndRoute(destinationMarker.getPosition(), 'destination');
+            });
+        }
+
+        if (startMarker && destinationMarker) {
+            calculateAndDisplayRoute();
+            calculateDistance();
+        }
+    }
+
+    function calculateAndDisplayRoute() {
+        directionsRenderer.setMap(null);
+        directionsRenderer.setOptions({suppressMarkers: true});
+
+        const request = {
+            origin: startMarker.getPosition(),
+            destination: destinationMarker.getPosition(),
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        directionsService.route(request, (response, status) => {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+                directionsRenderer.setMap(mapInstance);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+
+    function calculateDistance() {
+        const start = startMarker.getPosition();
+        const end = destinationMarker.getPosition();
+        const distance = google.maps.geometry.spherical.computeDistanceBetween(start, end) / 1000;
+
+        distanceElement.value = distance.toFixed(2);
+
+        calculateCost();
+    }
+</script>
+
+</body>
+</html>
